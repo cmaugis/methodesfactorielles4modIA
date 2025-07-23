@@ -15,7 +15,8 @@ website:
         href: 2526-TP4-MFA-Sujet.qmd
       - text: TP5-MDS
         href: 2526-TP5-MDS-Sujet.qmd
-
+    logo: LogoINSAToulouse.jpg
+    search: true
 format:
   html:
     theme: cosmo

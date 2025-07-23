@@ -1,6 +1,5 @@
 Partie Méthodes Factorielles du cours d'Analyse de Données de 4modIA. 
 
-
 - Part 1: Principal Component Analysis (PCA)
 - Part 2: Correspondence Analysis (CA)
 - Part 3: Multiple Correspondence Analysis (MCA)

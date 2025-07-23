@@ -1,6 +1,5 @@
 ---
 title: "TP5 - Multidimensional Scaling"
-subtitle: "4modIA / 2025-2026"
 format:
   html:
     toc: true
@@ -26,8 +25,7 @@ library(corrplot)
 
 # Exercice 1 : Données simulées
 
-Dans cet exercice, on va partir d'un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). 
-On simule un échantillon $\mathbf Y = (Y_1,\ldots,Y_n)$ avec $Y_i\in\mathbb R^5$ et $n=20$. On calcule la distance euclidienne usuelle entre chaque pair d'individus à l'aide de la fonction `dist()`. La matrice $\mathcal D$ obtenue est visualisée à l'aide de la fonction `autoplot()` de la librairie `ggfortify`. 
+Dans cet exercice, on va partir d'un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). On simule un échantillon $\mathbf Y = (Y_1,\ldots,Y_n)$ avec $Y_i\in\mathbb R^5$ et $n=20$. On calcule la distance euclidienne usuelle entre chaque pair d'individus à l'aide de la fonction `dist()`. La matrice $\mathcal D$ obtenue est visualisée à l'aide de la fonction `autoplot()` de la librairie `ggfortify`.
 
 ```{r}
 #| message: false
@@ -39,10 +37,9 @@ D<-dist(Y)
 autoplot(D)
 ```
 
-On souhaite faire une MDS à partir de la matrice de distance $\mathcal D=(d_{ij})$. 
+On souhaite faire une MDS à partir de la matrice de distance $\mathcal D=(d_{ij})$.
 
-
-**Question 1:** Programmez les matrices $A = (-\frac 1 2 d_{ij}^2)$, $H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}^\top$ et $B=H A H^\top$. 
+**Question 1:** Programmez les matrices $A = (-\frac 1 2 d_{ij}^2)$, $H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}^\top$ et $B=H A H^\top$.
 
 ```{r}
 #| eval: false 
@@ -51,18 +48,14 @@ H<- ...
 B<- ...
 ```
 
-
-**Question 2:** Faites la décomposition spectrale de $B$. Que pouvez-vous dire des valeurs propres ? Tracez les valeurs propres décroissantes. 
+**Question 2:** Faites la décomposition spectrale de $B$. Que pouvez-vous dire des valeurs propres ? Tracez les valeurs propres décroissantes.
 
 ```{r}
 #| eval: false 
 # A COMPLETER
 ```
 
-
-
-
-**Question 3:** Déduisez-en les coordonnées principales $X=\{x_1,\ldots,x_n\}$ et tracez les individus dans l'espace euclidien retenu. 
+**Question 3:** Déduisez-en les coordonnées principales $X=\{x_1,\ldots,x_n\}$ et tracez les individus dans l'espace euclidien retenu.
 
 ```{r}
 #| eval: false 
@@ -70,7 +63,7 @@ X<- ...
 # A COMPLETER
 ```
 
-**Question 4:** A l'aide de la fonction `cmdscale()`, faites une MDS sur $\mathcal D$ et comparez avec les résultats des questions précédentes. 
+**Question 4:** A l'aide de la fonction `cmdscale()`, faites une MDS sur $\mathcal D$ et comparez avec les résultats des questions précédentes.
 
 ```{r}
 #| eval: false 
@@ -78,7 +71,7 @@ res<-cmdscale(.....)
 # A COMPLETER
 ```
 
-**Question 5:** On s'intéresse au lien entre MDS et PCA. Faites une PCA sur le jeu de données $Y$. Retrouvez le lien entre les coordonnées principales de la MDS et les composantes principales de l'ACP. 
+**Question 5:** On s'intéresse au lien entre MDS et PCA. Faites une PCA sur le jeu de données $Y$. Retrouvez le lien entre les coordonnées principales de la MDS et les composantes principales de l'ACP.
 
 ```{r}
 #| eval: false 
@@ -90,8 +83,7 @@ resPCA<-PCA(....)
 
 Pour cet exercice, nous travaillerons sur les données `mdsville.csv`. Elles se présentent sous la forme d'une matrice symétrique triangulaire contenant les distances kilométriques routières de 47 villes françaises.
 
-**Question 1:** Lisez le fichier de données `mdsvilles.csv` et transformez en matrice de distance avec la fonction `as.dist()`.
-Visualisez la matrice de distance. 
+**Question 1:** Lisez le fichier de données `mdsvilles.csv` et transformez en matrice de distance avec la fonction `as.dist()`. Visualisez la matrice de distance.
 
 ```{r}
 #| eval: false 
@@ -99,13 +91,12 @@ mdsvilles <- read.csv(.....)
 d<-as.dist(mdsville,diag=TRUE)
 ```
 
-**Question 2:** A l'aide de la fonction `cmdscale()`, faites une MDS sur la matrice distance $\mathcal D$. 
+**Question 2:** A l'aide de la fonction `cmdscale()`, faites une MDS sur la matrice distance $\mathcal D$.
 
 ```{r}
 #| eval: false 
 mds <- cmdscale(...)
 ```
-
 
 **Question 3:** Etudiez le pourcentage d'inertie et d'inertie cumulée en fonction de la dimension $r$. Combien de coordonnées principales retenez-vous ?
 
@@ -114,7 +105,7 @@ mds <- cmdscale(...)
 # A COMPLETER
 ```
 
-**Question 4:** Visualisez graphiquement les coordonnées des villes. Commentez. Transposez le graphique pour plus de concordance géographique. 
+**Question 4:** Visualisez graphiquement les coordonnées des villes. Commentez. Transposez le graphique pour plus de concordance géographique.
 
 ```{r}
 #| eval: false 
@@ -141,7 +132,7 @@ ggplot(df,aes(x=d,y=dhat))+
   geom_line(aes(x=d,y=d),col="blue")
 ```
 
-**Question 7:** Pour  dépasser  le  problème  des  valeurs  propres  négatives  de  la  matrice $B$,  une autre possibilité consiste  à ajouter une  constante  positive $c$ aux  éléments  hors  diagonale  principale. Elle  doit être  la plus   petite possible   pour   éviter   de détériorer l’information. Sa   valeur   peut   être   déterminée analytiquement. En adaptant les options de la fonction `cmdscale()`, mettez en place cette procédure. Que vaut la constante $c$ optimisée ? Comparez les résultats avec ceux des questons précédentes. 
+**Question 7:** Pour dépasser le problème des valeurs propres négatives de la matrice $B$, une autre possibilité consiste à ajouter une constante positive $c$ aux éléments hors diagonale principale. Elle doit être la plus petite possible pour éviter de détériorer l'information. Sa valeur peut être déterminée analytiquement. En adaptant les options de la fonction `cmdscale()`, mettez en place cette procédure. Que vaut la constante $c$ optimisée ? Comparez les résultats avec ceux des questons précédentes.
 
 ```{r}
 #| eval: false 
@@ -174,7 +165,7 @@ Lspam<-data.frame("spam"=spam[,1],log(1+spam[,2:58]))
 # A COMPLETER
 ```
 
-**Question 3:** Faites une ACP des données transformées et commentez. 
+**Question 3:** Faites une ACP des données transformées et commentez.
 
 ```{r}
 #| eval: false 
@@ -182,7 +173,7 @@ resPCA<-PCA(...)
 # A COMPLETER
 ```
 
-**Question 4:** On cherche à mieux comprendre les variables. On considère la dissimilarité suivante entre deux variables $X^{(i)}$ et $X^{(j)}$ basée sur la corrélation. Faites une représentation par positionnement multidimensionnel (MDS) des variables. 
+**Question 4:** On cherche à mieux comprendre les variables. On considère la dissimilarité suivante entre deux variables $X^{(i)}$ et $X^{(j)}$ basée sur la corrélation. Faites une représentation par positionnement multidimensionnel (MDS) des variables.
 
 $$
 d_{ij} = \sqrt{2(1- \mbox{cor}(X^{(i)},X^{(j)})^2)}
@@ -192,4 +183,3 @@ $$
 #| eval: false 
 # A COMPLETER
 ```
-

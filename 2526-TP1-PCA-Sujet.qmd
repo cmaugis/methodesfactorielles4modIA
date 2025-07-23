@@ -1,6 +1,5 @@
 ---
 title: "TP1 - Principal Component Analysis"
-subtitle: "4modIA / 2025-2026"
 format:
   html:
     toc: true
@@ -21,8 +20,6 @@ library(FactoMineR)
 library(factoextra)
 library(corrplot)
 library(reticulate)
-
-#use_virtualenv("r-reticulate")
 ```
 
 # Compréhension de l'ACP
