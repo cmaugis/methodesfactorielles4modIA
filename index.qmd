@@ -8,4 +8,4 @@ Partie Méthodes Factorielles du cours d'Analyse de Données de 4modIA.
 - Part 5: MultiDimensional Scaling (MDS)
 
 
-[Tutoriel R en ligne](https://cmaugis.github.io/TutorielR-V2025/)
+[Tutoriel R en ligne](https://cmaugis.github.io/TutorielR-V2025/){target="_blank}
