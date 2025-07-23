@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4modIA - Méthodes Factorielles - TP4 - Multiple Factor Analysis (MFA)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">4modIA - Méthodes Factorielles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./2526-TP1-PCA-Sujet.html" rel="" target="">
+ <span class="menu-text">TP1-PCA</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./2526-TP2-CA-Sujet.html" rel="" target="">
+ <span class="menu-text">TP2-CA</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./2526-TP3-MCA-Sujet.html" rel="" target="">
+ <span class="menu-text">TP3-MCA</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./2526-TP4-MFA-Sujet.html" rel="" target="" aria-current="page">
+ <span class="menu-text">TP4-MFA</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./2526-TP5-MDS-Sujet.html" rel="" target="">
+ <span class="menu-text">TP5-MDS</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lecture-des-données" id="toc-lecture-des-données" class="nav-link active" data-scroll-target="#lecture-des-données"><span class="header-section-number">1</span> Lecture des données</a></li>
+  <li><a href="#groupes-de-variables" id="toc-groupes-de-variables" class="nav-link" data-scroll-target="#groupes-de-variables"><span class="header-section-number">2</span> Groupes de variables</a></li>
+  <li><a href="#acp-pour-chaque-jury" id="toc-acp-pour-chaque-jury" class="nav-link" data-scroll-target="#acp-pour-chaque-jury"><span class="header-section-number">3</span> ACP pour chaque jury</a></li>
+  <li><a href="#afm-avec-factominer" id="toc-afm-avec-factominer" class="nav-link" data-scroll-target="#afm-avec-factominer"><span class="header-section-number">4</span> AFM avec FactoMineR</a></li>
+  <li><a href="#lien-entre-afm-et-acp" id="toc-lien-entre-afm-et-acp" class="nav-link" data-scroll-target="#lien-entre-afm-et-acp"><span class="header-section-number">5</span> Lien entre AFM et ACP</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">TP4 - Multiple Factor Analysis (MFA)</h1>
+<p class="subtitle lead">4modIA / 2025-2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FactoMineR)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="lecture-des-données" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Lecture des données</h1>
+<p>Dans ce TP, nous reprenons le jeu de données des vins qui a été utilisé pour illustrer le cours sur l’Analyse Factorielle Multiple (AFM). Le fichier de données est disponible sur la page moodle du cours <code>AnaDo_JeuDonnees_VinsJury.csv</code>.</p>
+<p>On commence par lire le fichier de données à l’aide de la fonction <code>read.table()</code> en précisant quelques options.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vins <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../../SlidesCours/Data/AnaDo_JeuDonnees_VinsJury.csv"</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">";"</span>,<span class="at">dec=</span><span class="st">"."</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names=</span><span class="dv">1</span>, <span class="at">check.names=</span><span class="cn">FALSE</span>, <span class="at">fileEncoding=</span><span class="st">"latin1"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>vins[,<span class="dv">1</span>]<span class="ot">&lt;-</span><span class="fu">as.factor</span>(vins[,<span class="dv">1</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      cepage Int.av.agitation Int.ap.agitation Expression
+S Michaud          Sauvignon         7.750000            8.000   7.142857
+S Renaudie         Sauvignon         7.125000            7.625   7.000000
+S Trotignon        Sauvignon         7.125000            7.375   7.142857
+S Buisse Domaine   Sauvignon         5.500000            6.250   5.428571
+S Buisse Cristal   Sauvignon         6.000000            6.500   6.166667
+V Aub Silex          Vouvray         3.857143            4.250   4.428571
+                    O.fruit O.passion O.agrume O.fruit.confit O.vanille
+S Michaud          4.250000 2.4285714 5.714286      0.6666667 0.5000000
+S Renaudie         4.428571 3.1428571 5.250000      0.6666667 0.5000000
+S Trotignon        5.142857 4.0000000 5.250000      1.0000000 0.5000000
+S Buisse Domaine   4.250000 2.4285714 3.571429      1.5000000 0.6666667
+S Buisse Cristal   5.625000 3.1428571 3.500000      3.0000000 1.1428571
+V Aub Silex        3.857143 0.6666667 3.285714      2.8571429 0.8333333
+                    O.boisee   O.champ O.vegetale O.florale O.alcool
+S Michaud          0.3333333 0.3333333   6.500000  6.571429 1.666667
+S Renaudie         0.3333333 0.3333333   6.125000  6.428571 3.400000
+S Trotignon        0.3333333 0.5000000   4.625000  5.142857 2.833333
+S Buisse Domaine   0.5000000 0.3333333   4.571429  5.750000 2.600000
+S Buisse Cristal   0.8571429 0.2857143   4.285714  4.000000 3.142857
+V Aub Silex        1.0000000 1.6666667   4.375000  3.714286 2.428571
+                   Typicite.olf.chenin Int.attaque   Sucree Acide Amere
+S Michaud                     2.333333    6.000000 3.500000 5.875 4.125
+S Renaudie                    1.125000    6.428571 3.285714 6.750 3.750
+S Trotignon                   0.625000    6.571429 3.000000 6.125 4.125
+S Buisse Domaine              2.571429    5.142857 3.875000 5.625 2.500
+S Buisse Cristal              4.142857    5.571429 3.375000 6.625 5.000
+V Aub Silex                   6.000000    5.142857 7.875000 4.375 3.000
+                   Astringence Fraicheur Oxydation  Finesse
+S Michaud             1.428571  6.625000 0.4285714 5.285714
+S Renaudie            2.333333  6.625000 0.2857143 5.142857
+S Trotignon           2.375000  6.875000 0.4285714 5.285714
+S Buisse Domaine      3.000000  6.250000 0.4285714 4.571429
+S Buisse Cristal      3.125000  6.428571 1.0000000 5.571429
+V Aub Silex           2.375000  4.714286 1.8571429 5.571429
+                   Persistance.gustative Persistance.aromatique Int.couleur
+S Michaud                       7.142857               6.714286       5.000
+S Renaudie                      7.166667               6.571429       3.375
+S Trotignon                     6.142857               6.142857       3.000
+S Buisse Domaine                4.857143               5.142857       4.125
+S Buisse Cristal                6.142857               5.142857       3.625
+V Aub Silex                     5.857143               5.571429       4.000
+                   Nuance.couleur Impression.surface O.Av.Intensite_E
+S Michaud                3.857143                2.5         5.361111
+S Renaudie               3.285714                2.6         5.138889
+S Trotignon              2.428571                2.8         5.277778
+S Buisse Domaine         4.285714                3.5         4.444444
+S Buisse Cristal         3.857143                3.8         4.916667
+V Aub Silex              4.000000                3.5         4.361111
+                   O.Ap.Intensite_E O.Alcool_E O.Vegetale_E O.Champignon_E
+S Michaud                  6.384507   4.121799     3.119488       2.722222
+S Renaudie                 5.966049   4.002137     2.916667       2.416667
+S Trotignon                5.972222   3.805556     3.000000       2.916667
+S Buisse Domaine           5.333333   4.333333     3.305556       2.361111
+S Buisse Cristal           5.766838   4.150370     3.194444       3.222222
+V Aub Silex                5.772435   4.623439     3.777778       2.916667
+                   O.Fruitpassion_E O.Typicite_E G.Intensite_E Sucree_E
+S Michaud                  4.916667     5.861111      5.444444 4.861111
+S Renaudie                 6.027778     5.638889      5.444444 4.666667
+S Trotignon                6.111111     5.055556      5.094377 5.055556
+S Buisse Domaine           5.083333     5.916667      4.722222 4.916667
+S Buisse Cristal           3.927557     5.249967      5.472222 4.612545
+V Aub Silex                3.333333     5.222222      5.526474 6.833333
+                    Acide_E  Amere_E Astringent_E G.Alcool_E Equilibre_E
+S Michaud          5.194444 4.027778     3.694444   5.250000    5.194444
+S Renaudie         5.277778 3.527778     3.527778   4.916667    4.750000
+S Trotignon        4.916667 3.583333     3.708656   4.805556    5.222222
+S Buisse Domaine   4.750000 3.750000     3.388889   4.972222    4.750000
+S Buisse Cristal   5.555556 3.555556     3.611111   5.166667    4.590730
+V Aub Silex        4.638889 3.444444     2.750000   4.876872    4.388889
+                   G.Typicite_E O.Av.Intensite_C O.Ap.Intensite_C O.Alcool_C
+S Michaud              5.416667         4.045455         5.200166   4.087040
+S Renaudie             5.500000         5.318182         6.000000   3.492589
+S Trotignon            5.361111         5.590909         6.090909   3.681818
+S Buisse Domaine       5.342321         4.136364         5.000000   4.227273
+S Buisse Cristal       5.187078         5.500000         6.727273   4.363636
+V Aub Silex            5.750000         3.545455         5.045455   4.610850
+                   O.Vegetale_C O.Champignon_C O.Fruitpassion_C O.Typicite_C
+S Michaud              4.636364       4.490000         5.090909     4.488404
+S Renaudie             4.454545       3.909091         6.454545     4.636364
+S Trotignon            4.590909       2.272727         6.954545     4.889068
+S Buisse Domaine       4.454545       3.636364         4.272727     4.727273
+S Buisse Cristal       4.318182       4.590909         4.090909     4.793830
+V Aub Silex            4.227273       4.045455         4.545455     5.227273
+                   G.Intensite_C Sucree_C  Acide_C  Amere_C Astringent_C
+S Michaud               4.500000 4.772727 4.409091 5.136364     4.272727
+S Renaudie              5.181818 5.363636 5.409091 4.318182     4.545455
+S Trotignon             5.045455 4.863636 5.090909 4.727273     5.727273
+S Buisse Domaine        4.318182 5.363636 4.909091 4.545455     4.636364
+S Buisse Cristal        5.727273 4.227273 6.409091 4.818182     3.954545
+V Aub Silex             4.807500 6.681818 4.500000 3.545455     3.727273
+                   G.Alcool_C Equilibre_C G.Typicite_C Juge1 Juge2 Juge3 Juge4
+S Michaud            5.090909    5.189683     5.000000     7   5.5   2.5     1
+S Renaudie           5.045455    5.090909     4.636364     6   5.5   2.5     2
+S Trotignon          4.603636    5.090909     4.772727     3   4.0   3.0     3
+S Buisse Domaine     4.909091    4.181818     4.272727     6   4.0   2.0     1
+S Buisse Cristal     4.772727    4.106768     4.818182     6   5.0   2.5     2
+V Aub Silex          4.363636    5.566567     5.590909     8   5.0   6.0     6
+                   Juge5 Juge6 Juge7 Juge8 Juge9 Juge10 Juge11 Juge12 Juge13
+S Michaud            5.0   3.5   4.5     1     1      1    2.5      5      1
+S Renaudie           3.5   1.0   3.5     2     8      1    2.5      5      1
+S Trotignon          4.5   2.0   4.0     2     6      4    2.0      8      1
+S Buisse Domaine     3.0   3.0   3.5     4     7      2    2.0      4      1
+S Buisse Cristal     4.0   2.5   4.0     1     3      2    2.5      2      1
+V Aub Silex          3.5   4.5   3.5     3    10      6    5.5      9      6
+                   Juge14 Juge15 Juge16 Juge17 Juge18 Juge19 Juge20 Juge21
+S Michaud             4.0    3.0      1    2.0    6.0    5.5    3.5      1
+S Renaudie            5.0    4.0      1    1.5    4.0    4.5    2.5      2
+S Trotignon           5.0    4.5      6    3.0    7.5    5.5    3.5      2
+S Buisse Domaine      6.0    3.0      3    4.0    3.0    2.5    2.5      6
+S Buisse Cristal      7.5    3.0      1    2.0    3.0    2.5    4.0      1
+V Aub Silex           8.0    4.0      6    5.5    6.0    5.5    4.5      2
+                   Juge22 Juge23 Juge24 Juge25 Juge26 Juge27 Juge28 Juge29
+S Michaud             2.5      5    4.5    4.0    3.0    1.5    2.0    1.5
+S Renaudie            3.5      2    1.0    4.0    3.0    2.5    2.5    1.5
+S Trotignon           2.5      4    3.0    5.0    4.5    3.5    2.5    1.5
+S Buisse Domaine      1.5      1    3.0    4.0    3.5    3.0    2.0    2.0
+S Buisse Cristal      1.5      2    3.5    2.0    4.0    4.0    2.0    3.5
+V Aub Silex           4.0      4    4.0    3.5    5.5    3.0    2.5    3.0
+                   Juge30 Juge31 Juge32 Juge33 Juge34 Juge35 Juge36 Juge37
+S Michaud             3.5    2.0    4.5    6.5    2.5      3    3.5      2
+S Renaudie            5.0    2.0    2.0    6.0    2.5      8    1.5      2
+S Trotignon           5.0    2.5    5.5    6.0    4.0      6    4.0      5
+S Buisse Domaine      4.5    3.0    5.0    7.0    4.5      3    4.0      4
+S Buisse Cristal      7.0    2.5    2.5    7.0    2.0      6    4.0      3
+V Aub Silex           8.0    7.5    8.5    9.5    5.0      4    4.0      4
+                   Juge38 Juge39 Juge40 Juge41 Juge42 Juge43 Juge44 Juge45
+S Michaud             7.0    2.5    3.5    5.5      4      6    3.5      1
+S Renaudie            5.5    2.5    2.0    4.0      3      3    5.0      2
+S Trotignon           4.5    4.0    8.5    5.0      3      7    4.0      1
+S Buisse Domaine      3.5    3.0    5.5    5.5      3      8    2.5      4
+S Buisse Cristal      4.0    3.0    2.0    5.0      2      4    4.0      1
+V Aub Silex           4.5    7.5    7.5    8.0      5      7    7.5      7
+                   Juge46 Juge47 Juge48 Juge49 Juge50 Juge51 Juge52 Juge53
+S Michaud               4    4.5    3.5    5.0      6    3.5    4.5    2.5
+S Renaudie              4    2.0    3.0    4.5      6    2.5    3.5    1.0
+S Trotignon             4    3.5    3.5    5.5      5    3.0    4.0    3.0
+S Buisse Domaine        1    5.0    3.0    8.0      5    2.0    3.0    3.0
+S Buisse Cristal        3    2.0    3.5    8.5      4    3.5    3.0    4.0
+V Aub Silex             7    8.5    6.0    7.0      7    1.0    6.5    5.5
+                   Juge54 Juge55 Juge56 Juge57 Juge58 Juge59 Juge60
+S Michaud             6.5    1.0      6    2.0      8    4.5      5
+S Renaudie            6.5    1.0      2    4.0      1    2.0      1
+S Trotignon           7.5    1.5      3    1.0      1    1.0      2
+S Buisse Domaine      4.0    2.5      3    1.5      6    5.0      3
+S Buisse Cristal      7.0    3.0      1    1.0      4    5.5      2
+V Aub Silex           7.0    3.0      7    2.0      4    6.0      6</code></pre>
+</div>
+</div>
+</section>
+<section id="groupes-de-variables" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Groupes de variables</h1>
+<p><strong>Question :</strong> Pour rappel, le jeu de données est composé de plusieurs groupes de variables</p>
+<ul>
+<li><em>cepage</em> : une variable qualitative indiquant le cépage</li>
+<li><em>Expert</em> : 27 variables quantitatives de descripteurs sensoriels d’un jury d’experts</li>
+<li><em>Etudiants</em> : 15 variables quantitatives de descripteurs sensoriels d’un jury d’étudiants (nom finissant par “_E”)</li>
+<li><em>Consommateurs</em> : 15 variables quantitatives de descripteurs sensoriels d’un jury de consommateurs (nom finissant par “_C”)</li>
+<li><em>Appreciation</em> : note de 60 consommateurs</li>
+</ul>
+<p>Créez des jeux de données distincts par groupe et quelques statistiques descriptives pour chaque groupe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>DataExpert<span class="ot">&lt;-</span>...</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>DataStudent<span class="ot">&lt;-</span>...</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>DataConsumer<span class="ot">&lt;-</span>...</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Appreciation<span class="ot">&lt;-</span>...</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>cepage<span class="ot">&lt;-</span>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="acp-pour-chaque-jury" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> ACP pour chaque jury</h1>
+<p><strong>Question :</strong> Faites une ACP pour le jeu de données des descripteurs sensoriels pour chaque jury séparément (à l’aide de la fonction <code>PCA</code>de la librairie <code>FactoMineR</code>). Analysez les résultats.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ACPExpert<span class="ot">&lt;-</span><span class="fu">PCA</span>(DataExpert,.....)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ACPStudent<span class="ot">&lt;-</span><span class="fu">PCA</span>(DataStudent, ....)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ACPConsumer<span class="ot">&lt;-</span><span class="fu">PCA</span>(DataConsumer, ....)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_eig</span>(....)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_ind</span>(....)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_var</span>(.....)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="afm-avec-factominer" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> AFM avec FactoMineR</h1>
+<p><strong>Question :</strong> Faites une analyse factorielle multiple (AFM) avec la fonction <code>MFA()</code> de la librairie <code>FactoMineR</code> sur le jeu de données <code>vins</code>. Le cépage et le groupe de variables <code>Appreciation</code> sont considérés comme des groupes de variables supplémentaires. Explorez la structure du contenu de la sortie <code>resMFA</code>. Retrouvez-vous les ACP faites dans la question précédente ?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resMFA<span class="ot">&lt;-</span><span class="fu">MFA</span>(.....)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>resMFA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lien-entre-afm-et-acp" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Lien entre AFM et ACP</h1>
+<p><strong>Question :</strong> L’analyse factorielle multiple est une ACP sur un jeu de données particulier que l’on appelle <code>DataMFA</code>. Retrouvez numériquement ce résultat.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dExpert<span class="ot">&lt;-</span>....</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dStudent<span class="ot">&lt;-</span>...</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dConsumer<span class="ot">&lt;-</span>...</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>DataMFA<span class="ot">&lt;-</span><span class="fu">cbind</span>(dexpert,dStudent,dConsumer)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>DataMFA<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">cepage=</span>cepage,DataMFA)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>resglobal<span class="ot">&lt;-</span><span class="fu">PCA</span>(DataMFA,....)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question :</strong> Déterminez les valeurs de <span class="math inline">\(\mathcal L_g\)</span> entre les groupes de variables. Comparez avec les valeurs dans <code>resMFA$group$Lg</code>. Que représentent les termes diagonaux ? Quel est le lien avec les valeurs propres des ACP séparées ? Vérifiez numériquement.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A COMPLETER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question :</strong> Comment est construit le graphique donné par la fonction suivante ? Commentez-le.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_mfa_var</span>(resMFA,<span class="st">"group"</span>,<span class="at">repel=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question :</strong> Quel est le lien entre les valeurs de <span class="math inline">\(\mathcal L_g(j,j')\)</span> et de <span class="math inline">\(RV(j,j')\)</span> ? Vérifiez numériquement et commentez les résultats.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>RV<span class="ot">&lt;-</span> ...</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>resMFA<span class="sc">$</span>group<span class="sc">$</span>RV</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question :</strong> On s’intéresse maintenant aux points partiels qui sont représentés à l’aide de la commande suivante. Comment ces points sont-ils calculés ? Vérifiez numériquement.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_mfa_ind</span>(resMFA,<span class="at">partial =</span> <span class="st">"all"</span>,<span class="at">repel=</span>T)<span class="sc">+</span><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question :</strong> Que représente la fonction suivante ? Retrouvez le lien avec les composantes principales des différentes ACP.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_mfa_axes</span>(resMFA,<span class="at">repel=</span>T)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A COMPLETER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

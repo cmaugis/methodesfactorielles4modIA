@@ -1,0 +1,430 @@
+---
+title: "TP1 - Principal Component Analysis"
+subtitle: "4modIA / 2025-2026"
+format:
+  html:
+    toc: true
+    toc-depth : 4
+    toc-location: left
+    number-sections: true
+    css: styles.css
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(ggplot2)
+library(gridExtra)
+library(reshape2)
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(reticulate)
+
+#use_virtualenv("r-reticulate")
+```
+
+# Compréhension de l'ACP
+
+## Description des données
+
+Dans cette première partie, nous considérons un jeu de données fictif pour décortiquer l'ACP. On considère les notes de 9 élèves dans 4 matières (Mathématiques, Physique, Français et Anglais).
+
+```{r}
+#| echo: false
+
+Notes<-data.frame(Maths = c(6,8,6,14.5,15,10,5.5,13,9), 
+                  Physique=c(6,8,7,14,15,10,7,12,9),
+                  Francais = c(5,8,11,16,12,5.5,14,8.5,12), 
+                  Anglais=c(5,8,10,15,12,7,11,9,12) )
+rownames(Notes)<-c("Olivier","Laura","Emma","Baptiste","Aymeric","Mathilde","Pauline","Maxime","Chloé")
+
+n<-nrow(Notes)
+p<- ncol(Notes) 
+```
+
+```{r}
+#| echo: false
+knitr::kable(Notes,align = 'c')
+```
+
+**Question :** Représentez la distribution des notes par matière
+
+```{r}
+#| eval: false
+
+# A COMPLETER
+```
+
+**Question :** A l'aide de la fonction `corrplot()` de la librairie portant le même nom, représentez la matrice des corrélations de ce jeu de données
+
+```{r}
+#| eval: false
+
+# A COMPLETER
+```
+
+## ACP centrée
+
+Comme les 4 variables sont à la même échelle, on décide de faire une analyse en composantes principales (ACP) sur les données centrées. A l'aide de la fonction `scale()`, centrez les données.
+
+```{r}
+#| eval: false
+
+NoteC<-scale(...) # A COMPLETER
+```
+
+**Question :** Quelle matrice cherche-t-on à diagonaliser dans cette ACP ? Programmez cette matrice et diagonalisez-la à l'aide de la fonction `eigen()`.
+
+```{r}
+#| eval: false
+
+Gamma<- .... # A COMPLETER
+A<-eigen(...)  
+```
+
+**Question :** Que représentent les valeurs propres dans ce cas ? Que représente la somme de ces valeurs propres ? Vérifiez numériquement.
+
+```{r}
+#| eval: false
+
+# A COMPLETER
+```
+
+**Question :** Faites une ACP centrée à l'aide de la fonction `PCA` de la librairie `FactoMineR`. Retrouvez l'interprétation des valeurs propres et représentez-les à l'aide de la fonction `fviz_eig()` de la librairie `factoextra`.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+respca<-PCA(...,graph=F)
+respca$......
+fviz_eig(respca)
+```
+
+**Question :** Déterminez les axes principaux à partir des résultats de la diagonalisation. Comparez avec les résultats dans `respca`.
+
+```{r}
+#| eval: false 
+
+# A COMPLETER
+```
+
+**Question :** Que contient la sortie `respca$ind$coord$` ? Comment obtient-on ses résultats à partir de la diagonalisation ? Vérifiez visuellement à l'aide de la commande `fviz_pca_ind(respca)`.
+
+```{r}
+#| eval: false
+
+# A COMPLETER
+```
+
+## ACP centrée réduite
+
+On fait maintenant une analyse en composantes principales sur les données centrées et réduites. Centrez et réduisez les données.
+
+```{r}
+#| eval: false 
+NotesCR<-....
+```
+
+**Question :** Quelle matrice cherche-t-on à diagonaliser dans ce cadre en ACP ? Programmez cette matrice et diagonalisez-la à l'aide de la fonction `eigen()`.
+
+```{r}
+#| eval: false 
+Gamma2<- .... # A COMPLETER
+B<-eigen(...)  
+```
+
+**Question :** Que représentent les valeurs propres dans ce cas ? Que représente la somme de ces valeurs propres ? Vérifiez numériquement.
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+**Question :** Faites une ACP centrée réduite à l'aide de la fonction `PCA` de la librairie `FactoMineR`. Retrouvez l'interprétation des valeurs propres et représentez-les à l'aide de la fonction `fviz_eig()` de la librairie `factoextra`.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+respca2<-PCA(...,graph=F)
+fviz_eig(respca2)
+```
+
+**Question :** Que représente la sortie suivante ?
+
+```{r,eval=F}
+fviz_pca_var(respca2)
+```
+
+**Question :** Représentez les projetés des individus dans le premier plan factoriel et commentez.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+```
+
+**Question :** Comment peut-on obtenir les résultats de cette ACP centrée réduite à partir du tableau de données centrées. Vérifiez numériquement.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+```
+
+# Données Ozone
+
+## Description des données
+
+Les données étudiées ont été recueillies à Rennes dans $112$ stations durant l'été 2001. Les 12 variables observées sont :
+
+-   maxO3 : Maximum de concentration d'ozone observé sur la journée en $\mu$gr/m3
+-   T9, T12, T15 : Température observée à 9, 12 et 15h
+-   Ne9, Ne12, Ne15 : Nébulosité observée à 9, 12 et 15h
+-   Vx9, Vx12, Vx15 : Composante E-O du vent à 9, 12 et 15h
+-   vent : orientation du vent à 12h
+-   pluie : occurrence ou non de précipitations
+
+```{r}
+Ozone<-read.table("Ozone.txt",header=T)
+Ozone$pluie<-as.factor(Ozone$pluie)
+Ozone$vent<-as.factor(Ozone$vent)
+Ozone<-Ozone[,-11]
+summary(Ozone)   
+```
+
+**Question :** Faites quelques statistiques descriptives pour appréhender le jeu de données. En particulier, étudiez les corrélations entre les variables quantitatives.
+
+```{r}
+#| eval: false
+
+# A COMPLETER
+```
+
+## ACP avec FactoMineR
+
+**Question :** Mettez en place une analyse en composantes principales à l'aide de la librairie `FactoMineR`. Combien de composantes principales retenez-vous ? Comment interprétez-vous les composantes principales en fonction des variables initiales ? Commentez la projection des individus dans les plans factoriels ? Vous pouvez compléter votre analyse à l'aide des variables qualitatives Pluie et Vent.
+
+```{r}
+#| eval: false 
+
+# A COMPLETER
+```
+
+## ACP en Python
+
+On s'intéresse maintenant à faire une analyse en composante principale sous Python. A l'aide des commandes suivantes, mettez en place une telle analyse. N'hésitez pas à améliorer la programmation en Python !
+
+### Avec le package [Prince](https://maxhalford.github.io/prince/)
+
+```{python}
+#| eval: False
+
+import numpy as np
+import pandas as pd
+
+Ozonepy=pd.read_csv('Ozone.txt',sep=" ",header=0).set_index(["pluie","vent"])
+Ozonepy=Ozonepy.iloc[:,:10]
+Ozonepy
+```
+
+```{python}
+#| eval: False
+
+import prince
+
+pca = prince.PCA(
+    n_components=5,
+    n_iter=3,
+    rescale_with_mean=True,
+    rescale_with_std=True,
+    copy=True,
+    check_input=True,
+    engine='sklearn',
+    random_state=42
+)
+
+pca = pca.fit(Ozonepy)
+pca.eigenvalues_summary
+    #pca.eigenvalues_
+    #pca.percentage_of_variance_
+    #pca.cumulative_percentage_of_variance_
+    
+pca.scree_plot()    
+```
+
+Projection des individus :
+
+```{python}
+#| eval: False
+
+# Coordonnées - Composantes principales
+pca.transform(Ozonepy).head()
+
+# Visualisation
+
+pca.plot(
+     Ozonepy,
+    x_component=0,
+    y_component=1,
+    color_rows_by='pluie',
+    show_row_markers=True,
+    show_column_markers=False,
+    show_row_labels=False,
+    row_labels_column=None,  # for DataFrames with a MultiIndex
+    show_column_labels=False
+)
+```
+
+```{python}
+#| eval: False
+
+pca.plot(
+     Ozonepy,
+    x_component=0,
+    y_component=1,
+    color_rows_by='vent',
+    show_row_markers=True,
+    show_column_markers=False,
+    show_row_labels=False,
+    row_labels_column=None,  # for DataFrames with a MultiIndex
+    show_column_labels=False
+)
+```
+
+Les axes principaux :
+
+```{python}
+#| eval: False
+
+pca.column_coordinates_
+```
+
+Contribution des individus :
+
+```{python}
+#| eval: False
+
+pca.row_contributions_.head().style.format(precision=2)  
+```
+
+Contributions des variables :
+
+```{python}
+#| eval: False
+
+pca.column_contributions_.style.format(precision=2)
+```
+
+Corrélation des variables :
+
+```{python}
+#| eval: False
+
+pca.column_correlations.style.format(precision=2)
+```
+
+### Avec scikit-learn
+
+```{python}
+#| eval: False
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+Ozonepy=pd.read_csv('Ozone.txt',sep=" ",header=0)
+OzoneSC=Ozonepy.iloc[:,:10]
+OzoneSC= StandardScaler().fit_transform(OzoneSC)
+```
+
+```{python}
+#| eval: False
+from sklearn.decomposition import PCA
+pca=PCA(n_components=3)
+dataPCA=pca.fit_transform(OzoneSC)
+pca.explained_variance_ratio_
+print(pca.explained_variance_ratio_.cumsum()) 
+
+
+principalDf=pd.DataFrame(data=dataPCA,columns=['PC 1', 'PC 2','PC 3'])
+```
+
+```{python}
+#| eval: False
+import matplotlib.pyplot as plt
+import plotly.express as px
+
+#pca_df = pd.DataFrame({
+#    "Dim1" : dataPCA[:,0], 
+#    "Dim2" : dataPCA[:,1],
+#    "Pluie" :Ozonepy.pluie,
+#    "Vent" : Ozonepy.vent
+#})
+#fig=px.scatter(pca_df,x="Dim1", y="Dim2", color="Vent")
+#fig.show()
+#fig=px.scatter(pca_df,x="Dim1", y="Dim2", color="Pluie")
+#fig.show()
+
+fig=px.scatter(dataPCA,x=0,y=1,color=Ozonepy.pluie)
+fig.show()
+
+fig=px.scatter(dataPCA,x=0,y=1,color=Ozonepy.vent)
+fig.show()
+```
+
+```{python}
+#| eval: False
+
+loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+#features = ['max03', 'T9', 'T12', 'T15','"Ne9','Ne12','Ne15','Vx9','Vx12','Vx15']
+features=Ozonepy.iloc[:,:10].columns.values
+
+for i, feature in enumerate(features):
+    fig.add_annotation(
+        ax=0, ay=0,
+        axref="x", ayref="y",
+        x=loadings[i, 0],
+        y=loadings[i, 1],
+        showarrow=True,
+        arrowsize=2,
+        arrowhead=2,
+        xanchor="right",
+        yanchor="top"
+    )
+    fig.add_annotation(
+        x=loadings[i, 0],
+        y=loadings[i, 1],
+        ax=0, ay=0,
+        xanchor="center",
+        yanchor="bottom",
+        text=feature,
+        yshift=5,
+    )
+#fig.show()
+```
+
+```{python}
+#| eval: False
+
+# cercle des correlation
+
+(fig, ax) = plt.subplots(figsize=(8, 8))
+for i in range(0, pca.components_.shape[1]):
+    ax.arrow(0,
+             0,  # Start the arrow at the origin
+             loadings[i, 0],  #0 for PC1
+             loadings[i,1],  #1 for PC2
+             head_width=0.1,
+             head_length=0.1)
+
+    plt.text(loadings[i,0] + 0.05,
+             loadings[i,1] + 0.05,
+             features[i])
+
+
+an = np.linspace(0, 2 * np.pi, 100)
+plt.plot(np.cos(an), np.sin(an))  # Add a unit circle for scale
+plt.axis('equal')
+ax.set_title('Variable factor map')
+plt.show()
+
+```

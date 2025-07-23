@@ -1,0 +1,26 @@
+project:
+  type: website
+
+website:
+  title: "4modIA - Méthodes Factorielles"
+  navbar:
+    left:
+      - text: TP1-PCA
+        href: 2526-TP1-PCA-Sujet.qmd
+      - text: TP2-CA
+        href: 2526-TP2-CA-Sujet.qmd
+      - text: TP3-MCA
+        href: 2526-TP3-MCA-Sujet.qmd
+      - text: TP4-MFA
+        href: 2526-TP4-MFA-Sujet.qmd
+      - text: TP5-MDS
+        href: 2526-TP5-MDS-Sujet.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+

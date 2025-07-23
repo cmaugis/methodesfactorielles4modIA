@@ -1,0 +1,208 @@
+---
+title: "TP3 - Multiple Correspondence Analysis"
+subtitle: "4modIA / 2025-2026"
+format:
+  html:
+    toc: true
+    toc-depth : 4
+    toc-location: left
+    number-sections: true
+    css: styles.css
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(FactoMineR)
+library(ggplot2)
+library(factoextra)
+library(reticulate)
+```
+
+# Description des données
+
+On s'intéresse à un jeu de données sur les propriétés de races de chiens. 
+Les données sont extraites de Bréfort (1982). Elles contiennent le descriptif des qualités de 27 races de chien : 
+
+- tailles (T), poids (P), vélocité (V) et intelligence (I) codées sur trois modalités (- faible, + moyen, ++ fort), 
+
+- affection (Af) et agressivité (Ag) sur deux modalités (- faible, + forte), 
+
+- la fonction sur trois modalités: Com (compagnie), Cha (chasse), Uti (utilité). 
+
+**Question :** Chargez le jeu de données `chiens.csv` disponible sur la page moodle du cours à l'aide de la fonction `read.csv()` (pensez aux options row.names, header, stringsAsFactors).
+
+```{r}
+#| eval: false 
+chiens<-read.csv(.....)
+summary(chiens)
+```
+
+
+Dans la suite, on va s'intéresser à faire une analyse des correspondances multiples avec toutes les variables sauf la variable `fonction` que l'on considère comme variable supplémentaire. 
+
+# ACM avec FactoMineR
+
+**Question :** Appliquez une ACM avec la fonction `MCA()` de la librairie `FactoMineR`. La variable `fonction` est une variable supplémentaire. 
+
+```{r}
+#| eval: false 
+# A COMPLETER
+resMCA<-MCA(...)
+```
+
+**Question :** Etudiez les valeurs propres. Interprétez vis-à-vis de l'inertie. 
+
+```{r}
+#| eval: false 
+## A COMPLETER
+```
+
+
+**Question :** Projetez les modalités sur le premier plan factoriel sans les individus dans un premier temps à l'aide de la fonction `fviz_mca()` et de son option `invisible`. Interprétez.
+
+```{r}
+#| eval: false 
+fviz_mca(...)
+```
+
+
+**Question :** Ajoutez maintenant les races de chien sur le graphique précédent. Interprétez.
+
+```{r}
+#| eval: false 
+fviz_mca(...)
+```
+
+
+**Question :** Que représente le graphique obtenu par la commande suivante ? Sur quelles quantités s'appuie ce graphique ? Retrouvez ces valeurs dans l'objet `resMCA`. A quoi correspond la moyenne de ces quantités ?
+
+```{r}
+#| eval: false 
+fviz_mca_var(resMCA, choice = "mca.cor", 
+            repel = TRUE, 
+            ggtheme = theme_minimal())
+```
+
+**Question :** Tracez les contributions des individus et des modalités à l'aide de la fonction `fviz_contrib()`. Interprétez. 
+
+```{r}
+#| eval: false 
+fviz_contrib(....)
+```
+
+
+# Retour sur quelques notions du cours
+
+**Question : ** A l'aide de la fonction `tab.disjonctif()`, construisez le tableau disjonctif complet $T=\left(t_{i,k}^{(j)}\right)$  et la matrice centrée $X=\left(x_{i,k}^{(j)}\right)$ où $x_{ik}^{(j)} = \frac{t_{ik}^{(j)}}{f_k^{(j)}} -1$
+
+```{r}
+#| eval: false 
+CDT<- ...
+CDTX<- ...
+```
+
+
+**Question :** Dans le cadre de l'analyse des correspondances multiples, quelle matrice souhaite-t-on diagonaliser pour les individus ? Vérifiez numériquement à l'aide de la fonction `eigen()`. 
+
+```{r}
+#| eval: false 
+W<- ...
+M<- ...
+R<- ...
+eigen(....)$values
+resMCA$eig[,1]
+```
+
+
+**Question :** Retrouvez numériquement que l'inertie vaut  $\frac K p -1$ et que c'est la somme des valeurs propres.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+```
+
+
+**Question :** Quel est le lien entre MCA et CA ? Vérifiez numériquement.
+
+```{r}
+#| eval: false 
+# A COMPLETER
+```
+
+# ACM sous Python
+
+Nous allons maintenant utiliser la librairie `prince` pour faire une analyse des correspondances multiples en python. On récupère le jeu de données depuis l'objet R à l'aide de la librairie `reticulate`. Vous pouvez aussi lire le fichier du jeu de données sous Python.  
+
+```{python}
+#| eval: False
+
+import pandas as pd
+import numpy as np
+import prince
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+chienspy=r.chiens
+```
+
+On met en place la MCA avec la fonction `prince.MCA` :
+
+```{python}
+#| eval: False
+
+mca = prince.MCA(
+    n_components=7,
+    n_iter=10,
+    copy=True,
+    check_input=True,
+    engine='sklearn',
+    random_state=42
+)
+mca = mca.fit(chienspy.iloc[:,0:6])
+```
+
+On a accès aux valeurs propres à l'aide de la fonction suivante :
+
+```{python}
+#| eval: False
+
+mca.eigenvalues_summary
+mca.scree_plot()
+```
+
+On trace les projetés dans le premier plan factoriel : 
+ 
+```{python}
+#| eval: False
+
+mca.plot(
+    chienspy,
+    x_component=0,
+    y_component=1,
+    show_column_markers=True,
+    show_row_markers=True,
+    show_column_labels=True,
+    show_row_labels=True
+)
+```
+
+On accède aux contributions des variables à l'aide de la commande suivante :
+
+```{python}
+#| eval: False
+
+contrib = mca.column_contributions_.style.format('{:.1%}')
+contrib.highlight_max(color='orange').highlight_min(color='lightblue')
+```
+
+On a également accès aux qualités :
+
+```{python}
+#| eval: False
+
+quality_comun = mca.column_cosine_similarities(chienspy).style.format('{:.2}')
+quality_comun.background_gradient()
+```
+

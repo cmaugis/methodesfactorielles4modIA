@@ -1,0 +1,12 @@
+.callout.callout-style-simple[data-custom-style="correction"] {
+    border-left: 4px solid violet;
+    background-color: rgba(243, 222, 254, 0.2); /* Violet clair */
+}
+
+.callout.callout-style-simple[data-custom-style="correction"] .callout-title {
+    color: violet;
+}
+
+.callout.callout-style-simple[data-custom-style="correction"] .callout-icon {
+    display: none;
+}

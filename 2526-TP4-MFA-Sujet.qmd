@@ -1,0 +1,152 @@
+---
+title: "TP4 - Multiple Factor Analysis (MFA)"
+subtitle: "4modIA / 2025-2026"
+format:
+  html:
+    toc: true
+    toc-depth : 4
+    toc-location: left
+    number-sections: true
+    css: styles.css
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(ggplot2)
+library(reshape2)
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+```
+
+# Lecture des données
+
+Dans ce TP, nous reprenons le jeu de données des vins qui a été utilisé pour illustrer le cours sur l'Analyse Factorielle Multiple (AFM). Le fichier de données est disponible sur la page moodle du cours `AnaDo_JeuDonnees_VinsJury.csv`. 
+
+On commence par lire le fichier de données à l'aide de la fonction `read.table()` en précisant quelques options. 
+
+```{r}
+vins <- read.table("../../SlidesCours/Data/AnaDo_JeuDonnees_VinsJury.csv",
+                  header=TRUE, sep=";",dec=".", 
+                  row.names=1, check.names=FALSE, fileEncoding="latin1")
+vins[,1]<-as.factor(vins[,1])
+head(vins)
+```
+
+# Groupes de variables
+
+**Question :** Pour rappel, le jeu de données est composé de plusieurs groupes de variables
+
+- *cepage* : une variable qualitative indiquant le cépage
+- *Expert* : 27 variables quantitatives de descripteurs sensoriels d'un jury d'experts
+- *Etudiants* : 15 variables quantitatives de descripteurs sensoriels d'un jury d'étudiants (nom finissant par "_E")
+- *Consommateurs* : 15 variables quantitatives de descripteurs sensoriels d'un jury de consommateurs (nom finissant par "_C")
+- *Appreciation* : note de 60 consommateurs
+
+Créez des jeux de données distincts par groupe et quelques statistiques descriptives pour chaque groupe.
+
+```{r}
+#| eval: false 
+
+DataExpert<-...
+DataStudent<-...
+DataConsumer<-...
+Appreciation<-...
+cepage<-...
+```
+
+
+# ACP pour chaque jury
+
+**Question :** Faites une ACP pour le jeu de données des descripteurs sensoriels pour chaque jury séparément (à l'aide de la fonction `PCA`de la librairie `FactoMineR`). Analysez les résultats. 
+
+```{r}
+#| eval: false 
+
+ACPExpert<-PCA(DataExpert,.....)
+ACPStudent<-PCA(DataStudent, ....)
+ACPConsumer<-PCA(DataConsumer, ....)
+fviz_eig(....)
+fviz_pca_ind(....)
+fviz_pca_var(.....)
+```
+
+
+# AFM avec FactoMineR
+
+**Question :** Faites une analyse factorielle multiple (AFM) avec la fonction `MFA()` de la librairie `FactoMineR` sur le jeu de données `vins`. Le cépage et le groupe de variables `Appreciation` sont considérés comme des groupes de variables supplémentaires. Explorez la structure du contenu de la sortie `resMFA`. Retrouvez-vous les ACP faites dans la question précédente ?
+
+```{r}
+#| eval: false 
+
+resMFA<-MFA(.....)
+resMFA
+```
+
+# Lien entre AFM et ACP
+
+**Question :** L'analyse factorielle multiple est une ACP sur un jeu de données particulier que l'on appelle `DataMFA`. Retrouvez numériquement ce résultat. 
+
+```{r}
+#| eval: false 
+
+dExpert<-....
+dStudent<-...
+dConsumer<-...
+DataMFA<-cbind(dexpert,dStudent,dConsumer)
+DataMFA<-data.frame(cepage=cepage,DataMFA)
+
+resglobal<-PCA(DataMFA,....)
+
+```
+
+
+**Question :** Déterminez les valeurs de $\mathcal L_g$ entre les groupes de variables. Comparez avec les valeurs dans `resMFA$group$Lg`. Que représentent les termes diagonaux ? Quel est le lien avec les valeurs propres des ACP séparées ? Vérifiez numériquement.
+
+```{r}
+#| eval: false 
+
+# A COMPLETER
+```
+
+**Question :** Comment est construit le graphique donné par la fonction suivante ? Commentez-le.  
+
+
+```{r}
+#| eval: false 
+
+fviz_mfa_var(resMFA,"group",repel=TRUE)
+```
+
+
+**Question :** Quel est le lien entre les valeurs de $\mathcal L_g(j,j')$ et de $RV(j,j')$ ? Vérifiez numériquement et commentez les résultats. 
+
+```{r}
+#| eval: false 
+
+RV<- ...
+resMFA$group$RV
+```
+
+
+**Question :** On s'intéresse maintenant aux points partiels qui sont représentés à l'aide de la commande suivante. Comment ces points sont-ils calculés ? Vérifiez numériquement. 
+
+```{r}
+#| eval: false 
+
+fviz_mfa_ind(resMFA,partial = "all",repel=T)+theme(legend.position="bottom")
+```
+
+
+**Question :** Que représente la fonction suivante ? Retrouvez le lien avec les composantes principales des différentes ACP. 
+
+```{r}
+#| eval: false 
+
+fviz_mfa_axes(resMFA,repel=T)
+
+# A COMPLETER
+```
+
