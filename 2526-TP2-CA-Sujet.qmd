@@ -7,8 +7,6 @@ format:
     toc-location: left
     number-sections: true
     css: styles.css
-    header-includes:
-    - \usepackage{dsfont}
 ---
 
 ```{r}
