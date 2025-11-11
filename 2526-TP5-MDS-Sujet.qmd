@@ -25,7 +25,7 @@ library(corrplot)
 
 # Exercice 1 : Données simulées
 
-Dans cet exercice, on va partir d'un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). On simule un échantillon $\mathbf Y = (Y_1,\ldots,Y_n)$ avec $Y_i\in\mathbb R^5$ et $n=20$. On calcule la distance euclidienne usuelle entre chaque pair d'individus à l'aide de la fonction `dist()`. La matrice $\mathcal D$ obtenue est visualisée à l'aide de la fonction `autoplot()` de la librairie `ggfortify`.
+Dans cet exercice, on va partir d'un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). On simule un échantillon $\mathbf Y = (Y_1,\ldots,Y_n)$ avec $Y_i\in\mathbb R^5$ et $n=20$. On calcule la distance euclidienne usuelle entre chaque paire d'individus à l'aide de la fonction `dist()`. La matrice $\mathcal D$ obtenue est visualisée à l'aide de la fonction `autoplot()` de la librairie `ggfortify`.
 
 ```{r}
 #| message: false
@@ -39,7 +39,7 @@ autoplot(D)
 
 On souhaite faire une MDS à partir de la matrice de distance $\mathcal D=(d_{ij})$.
 
-**Question 1:** Programmez les matrices $A = (-\frac 1 2 d_{ij}^2)$, $H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}^\top$ et $B=H A H^\top$.
+**Question 1:** Programmez les matrices $A = (-\frac 1 2 d_{ij}^2)$, $H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}_n^\top$ et $B=H A H^\top$.
 
 ```{r}
 #| eval: false 

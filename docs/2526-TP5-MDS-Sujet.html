@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="exercice-1-données-simulées" class="level1">
 <h1>Exercice 1 : Données simulées</h1>
-<p>Dans cet exercice, on va partir d’un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). On simule un échantillon <span class="math inline">\(\mathbf Y = (Y_1,\ldots,Y_n)\)</span> avec <span class="math inline">\(Y_i\in\mathbb R^5\)</span> et <span class="math inline">\(n=20\)</span>. On calcule la distance euclidienne usuelle entre chaque pair d’individus à l’aide de la fonction <code>dist()</code>. La matrice <span class="math inline">\(\mathcal D\)</span> obtenue est visualisée à l’aide de la fonction <code>autoplot()</code> de la librairie <code>ggfortify</code>.</p>
+<p>Dans cet exercice, on va partir d’un jeu de données simulé afin de comprendre le cours sur le Multidimensional Scaling (MDS). On simule un échantillon <span class="math inline">\(\mathbf Y = (Y_1,\ldots,Y_n)\)</span> avec <span class="math inline">\(Y_i\in\mathbb R^5\)</span> et <span class="math inline">\(n=20\)</span>. On calcule la distance euclidienne usuelle entre chaque paire d’individus à l’aide de la fonction <code>dist()</code>. La matrice <span class="math inline">\(\mathcal D\)</span> obtenue est visualisée à l’aide de la fonction <code>autoplot()</code> de la librairie <code>ggfortify</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1111</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Y<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="fu">round</span>(<span class="fu">runif</span>(<span class="dv">20</span><span class="sc">*</span><span class="dv">5</span>,<span class="at">min=</span><span class="sc">-</span><span class="dv">5</span>,<span class="at">max=</span><span class="dv">5</span>),<span class="dv">0</span>),<span class="at">ncol=</span><span class="dv">5</span>)</span>
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>On souhaite faire une MDS à partir de la matrice de distance <span class="math inline">\(\mathcal D=(d_{ij})\)</span>.</p>
-<p><strong>Question 1:</strong> Programmez les matrices <span class="math inline">\(A = (-\frac 1 2 d_{ij}^2)\)</span>, <span class="math inline">\(H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}^\top\)</span> et <span class="math inline">\(B=H A H^\top\)</span>.</p>
+<p><strong>Question 1:</strong> Programmez les matrices <span class="math inline">\(A = (-\frac 1 2 d_{ij}^2)\)</span>, <span class="math inline">\(H=I_n - \frac 1 n \mathbb{1}_n \mathbb{1}_n^\top\)</span> et <span class="math inline">\(B=H A H^\top\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">&lt;-</span> ...</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>H<span class="ot">&lt;-</span> ...</span>
