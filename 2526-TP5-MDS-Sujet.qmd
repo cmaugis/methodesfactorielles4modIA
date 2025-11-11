@@ -157,7 +157,7 @@ dim(spam)
 summary(spam)
 ```
 
-**Question 2:** On propose de logtransformer les données. Vérifiez l'impacte de cette transformation. 
+**Question 2:** On propose de logtransformer les données. Vérifiez l'impact de cette transformation.
 
 ```{r}
 #| eval: false 
