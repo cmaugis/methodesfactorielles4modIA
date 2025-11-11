@@ -142,7 +142,7 @@ mds.bis <-cmdscale(...)
 
 # Exercice 3 : Données `Spam`
 
-On s'intéresse ici à des données textuelles. George, ingénieur chez HP dans le département Computer Science a recueilli un échantillon de messages électroniques dans chacun desquels il a évalué le nombre d'occurrences d'une sélection de mots et caractères. Les variables considérées sont dans un premier temps des rapports (nombre d'occurrences d'un mot spécifique sur le nombre total de mots ou nombre d'occurrences d'un caractère sur le nombre de caractères du message) avant d'être transformées en indicatrices ou facteurs: présence / absence de mots ou ensemble de caractères. Il a également considéré trois variables prenant en compte la casse (majuscule / minuscule) des caractères et une dernière qualitative binaire indiquant le classement qu'il a fait de chaque message : spam ou pas. Ces données sont publiques, elles servent régulièrement de benchmark pour la comparaison de méthodes d'apprentissage machine: jeu de données `spam` issu du site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/).
+On s'intéresse ici à des données textuelles. George, ingénieur chez HP dans le département Computer Science a recueilli un échantillon de messages électroniques dans chacun desquels il a évalué le nombre d'occurrences d'une sélection de mots et caractères. Les variables considérées sont dans un premier temps des rapports (nombre d'occurrences d'un mot spécifique sur le nombre total de mots ou nombre d'occurrences d'un caractère sur le nombre de caractères du message) avant d'être transformées en indicatrices ou facteurs: présence / absence de mots ou ensemble de caractères. Il a également considéré trois variables prenant en compte la casse (majuscule / minuscule) des caractères et une dernière qualitative binaire indiquant le classement qu'il a fait de chaque message : spam ou pas. Ces données sont publiques, elles servent régulièrement de benchmark pour la comparaison de méthodes d'apprentissage machine : jeu de données `spam` issu du site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/).
 
 Au final, les données se présentent sous la forme d'un tableau contenant $p=57$ mots observés dans $n=4601$ messages dont $1813$ sont des spams.
 
@@ -157,7 +157,7 @@ dim(spam)
 summary(spam)
 ```
 
-**Question 2:** On propose de logtransformer les données. Vérifiez l'impacte de cette normalisation
+**Question 2:** On propose de logtransformer les données. Vérifiez l'impacte de cette transformation. 
 
 ```{r}
 #| eval: false 
@@ -173,7 +173,7 @@ resPCA<-PCA(...)
 # A COMPLETER
 ```
 
-**Question 4:** On cherche à mieux comprendre les variables. On considère la dissimilarité suivante entre deux variables $X^{(i)}$ et $X^{(j)}$ basée sur la corrélation. Faites une représentation par positionnement multidimensionnel (MDS) des variables.
+**Question 4:** On cherche à mieux comprendre les variables. On considère la dissimilarité suivante entre deux variables $X^{(i)}$ et $X^{(j)}$, basée sur la corrélation. Faites une représentation par positionnement multidimensionnel (MDS) des variables.
 
 $$
 d_{ij} = \sqrt{2(1- \mbox{cor}(X^{(i)},X^{(j)})^2)}
