@@ -132,7 +132,7 @@ ggplot(df,aes(x=d,y=dhat))+
   geom_line(aes(x=d,y=d),col="blue")
 ```
 
-**Question 7:** Pour dépasser le problème des valeurs propres négatives de la matrice $B$, une autre possibilité consiste à ajouter une constante positive $c$ aux éléments hors diagonale principale. Elle doit être la plus petite possible pour éviter de détériorer l'information. Sa valeur peut être déterminée analytiquement. En adaptant les options de la fonction `cmdscale()`, mettez en place cette procédure. Que vaut la constante $c$ optimisée ? Comparez les résultats avec ceux des questons précédentes.
+**Question 7:** Pour dépasser le problème des valeurs propres négatives de la matrice $B$, une autre possibilité consiste à ajouter une constante positive $c$ aux éléments hors diagonale principale. Elle doit être la plus petite possible pour éviter de détériorer l'information. Sa valeur peut être déterminée analytiquement. En adaptant les options de la fonction `cmdscale()`, mettez en place cette procédure. Que vaut la constante $c$ optimisée ? Comparez les résultats avec ceux des questions précédentes.
 
 ```{r}
 #| eval: false 
